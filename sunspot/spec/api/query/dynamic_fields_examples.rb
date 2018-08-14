@@ -77,6 +77,15 @@ shared_examples_for "query with dynamic field support" do
     connection.should have_last_search_with(:sort => 'custom_integer:test_i desc')
   end
 
+  it "does not choke on sorts which are invalid as constants" do
+    search do
+      dynamic :custom_integer do
+        order_by :'2gi', :desc
+      end
+    end
+    connection.should have_last_search_with(:sort => 'custom_integer:2gi_i desc')
+  end
+
   it 'orders by a dynamic field and static field, with given precedence' do
     search do
       dynamic :custom_integer do

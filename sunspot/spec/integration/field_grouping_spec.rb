@@ -72,14 +72,6 @@ describe "field grouping" do
     title1_group.hits.first.primary_key.to_i.should == highest_ranked_post.id
   end
 
-  it "does not choke on sorts which are invalid as constants" do
-    search = Sunspot.search(Post) do
-      group :title do
-        order_by(:'2imp', :desc)
-      end
-    end
-  end
-
   it "allows pagination within groups" do
     search = Sunspot.search(Post) do
       group :title
