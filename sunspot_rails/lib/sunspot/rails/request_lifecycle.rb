@@ -21,7 +21,7 @@ module Sunspot #:nodoc:
           # structure, the already-loaded subclasses don't get the filters. So,
           # the below ensures that all loaded controllers have the filter.
           loaded_controllers.each do |controller|
-            controller.after_filter do
+            controller.after_action do
               if Sunspot::Rails.configuration.auto_commit_after_request?
                 Sunspot.commit_if_dirty
               elsif Sunspot::Rails.configuration.auto_commit_after_delete_request?
