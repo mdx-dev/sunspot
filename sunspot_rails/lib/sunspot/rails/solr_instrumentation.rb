@@ -4,7 +4,7 @@ module Sunspot
       extend ActiveSupport::Concern
 
       included do
-        alias_method :send_and_receive, :as_instrumentation
+        alias_method_chain :send_and_receive, :as_instrumentation
       end
 
 
