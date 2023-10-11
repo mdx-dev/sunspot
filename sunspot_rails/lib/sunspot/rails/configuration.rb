@@ -357,7 +357,7 @@ module Sunspot #:nodoc:
             if File.exist?(path)
               File.open(path) do |file|
                 processed = ERB.new(file.read).result
-                YAML.load(processed)[::Rails.env]
+                YAML.load(processed, aliases: true)[::Rails.env]
               end
             else
               {}
