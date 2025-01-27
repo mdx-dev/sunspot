@@ -1,4 +1,3 @@
-
 require File.expand_path('spec_helper', File.dirname(__FILE__))
 require 'tempfile'
 
@@ -67,8 +66,6 @@ describe Sunspot::Solr::Server do
       expect(Tempfile).to receive(:new).with('logging.properties').and_return(@tempfile = StringIO.new)
       expect(@tempfile).to receive(:flush)
       expect(@tempfile).to receive(:close)
-      
-      # Replace `stub` with `allow`
       allow(@tempfile).to receive(:path).and_return('/tmp/logging.properties.12345')
       allow(@server).to receive(:exec)
     end
