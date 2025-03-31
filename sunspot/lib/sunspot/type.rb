@@ -371,7 +371,12 @@ module Sunspot
     #
     class LatlonType < AbstractType
       def indexed_name(name)
-        "#{name}_p"
+        # TEMPORARY CONDITIONAL WORKAROUND TO SUPPORT PLACES QUERIES TO SOLR 7.
+        # The shared Places Solr instance and infrastructure is managed separately from the client/env solr servers
+        # and will need to be# updated subsequently. At that time this conditional needs to be removed. This is temporary fix
+        # so we our API endpoints /cities.json and # /geolocation/resolve.json can still query Places using the Solr 7-style
+        # query without blocking the rest of the stack's upgrade to Solr 9.
+        name == :geo ? "#{name}_ll" : "#{name}_p"
       end
 
       def to_indexed(value)
