@@ -25,26 +25,32 @@ module Sunspot
       def to_params(prefix = "")
         unless @sorts.empty?
           key = "#{prefix}sort".to_sym
-          params = { key => @sorts.map { |sort| sort.to_params[:sort] } * ', ' }
+          combined_params = join_sort_params(key)
           @sorts.each do |sort|
             sort.to_params.each do |param, value|
               next if param == :sort
               param = param.to_sym
-              if params.has_key?(param) && params[param] != value
+              if combined_params.has_key?(param) && combined_params[param] != value
                 raise(
                   ArgumentError,
-                  "Encountered duplicate additional sort param '#{param}' with different values ('#{params[param]}' vs. '#{value}')"
+                  "Encountered duplicate additional sort param '#{param}' with different values ('#{combined_params[param]}' vs. '#{value}')"
                 )
               end
 
-              params[param] = value
+              combined_params[param] = value
             end
           end
 
-          params
+          combined_params
         else
           {}
         end
+      end
+
+      private
+
+      def join_sort_params(key)
+        { key => @sorts.map { |sort| sort.to_params[:sort] } * ', ' }
       end
     end
   end
