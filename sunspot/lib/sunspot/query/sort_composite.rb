@@ -26,7 +26,6 @@ module Sunspot
         return {} if @sorts.empty?
 
         combined_params = join_sort_params(prefix)
-
         @sorts.each_with_object(combined_params) do |sort, acc|
           sort.to_params.each do |param, value|
             next if param == :sort
@@ -47,7 +46,6 @@ module Sunspot
 
       def join_sort_params(prefix)
         key = "#{prefix}sort".to_sym
-
         { key => @sorts.map { |sort| sort.to_params[:sort] } * ', ' }
       end
     end
