@@ -360,7 +360,7 @@ module Sunspot
 
     # 
     # The Latlon type encodes geographical coordinates in the native
-    # Solr LatLonType.
+    # Solr LatLonPointSpatialField.
     #
     # The data for this type must respond to the `lat` and `lng` methods; you
     # can use Sunspot::Util::Coordinates as a wrapper if your source data does
@@ -371,7 +371,12 @@ module Sunspot
     #
     class LatlonType < AbstractType
       def indexed_name(name)
-        "#{name}_ll"
+        # TEMPORARY CONDITIONAL WORKAROUND TO SUPPORT PLACES QUERIES TO SOLR 7.
+        # The shared Places Solr instance and infrastructure are managed separately from the client/env solr servers
+        # and will need to be updated subsequently. At that time this conditional needs to be removed. This is a temporary fix
+        # so our API endpoints /cities.json and # /geolocation/resolve.json can still query Places using the Solr 7-style
+        # schema without blocking the rest of the stack's upgrade to Solr 9.
+        name == :geo ? "#{name}_ll" : "#{name}_p"
       end
 
       def to_indexed(value)
